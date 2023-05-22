@@ -1,7 +1,7 @@
 package com.sendmail;
 
 import java.util.Properties;
-import  javax.mail.Message;
+import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
@@ -11,8 +11,18 @@ import javax.mail.internet.MimeMessage;
 
 public class SendMail {
         private String to;
-        private static final String from = "fromemail";
-        private static final String host = "smtp.office365.com";   
+        private String from;
+        private String pass;
+        private static final String host = "smtp.office365.com";
+        
+        public void setFrom(String from){
+            this.from = from;
+        }
+        
+        public void setPass(String pass){
+            this.pass = pass;
+        }
+        
         
     
         public void setTo(String to){
@@ -22,7 +32,7 @@ public class SendMail {
         public void sendEmail(){
             final Session session = Session.getInstance(this.mailProperties(), new javax.mail.Authenticator() {
                 protected PasswordAuthentication getPasswordAuthentication(){
-                    PasswordAuthentication auth = new PasswordAuthentication(from, "SENHAFROM");
+                    PasswordAuthentication auth = new PasswordAuthentication(from, pass);
                     return auth;
                 }
             });
