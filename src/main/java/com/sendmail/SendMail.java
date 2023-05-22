@@ -23,8 +23,6 @@ public class SendMail {
             this.pass = pass;
         }
         
-        
-    
         public void setTo(String to){
             this.to = to;
         }

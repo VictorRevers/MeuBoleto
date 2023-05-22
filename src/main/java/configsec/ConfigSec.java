@@ -10,22 +10,21 @@ import java.io.BufferedReader;
 public class ConfigSec {
     private String from;
     private String pass;
+    private String to;
     
     public void setFrom(String from){
         this.from = from;
-    }
-    
-    public String getFrom(){
-        return this.from;
-    }
+    }  
     
     public void setPass(String pass){
          this.pass = pass;
     }
     
-    public String getPass(){
-        return this.pass;
+    public void setTo(String to){
+        this.to = to;
     }
+    
+    
     
     
     private File configFile(){
@@ -74,6 +73,8 @@ public class ConfigSec {
                     bw.write(this.from);
                     bw.newLine();
                     bw.write(this.pass);
+                    bw.newLine();
+                    bw.write(this.to);
                     
                     bw.close();
                     fw.close();
@@ -96,7 +97,7 @@ public class ConfigSec {
         if(fileDir){
             File file = this.configFile();
             int i = 0;
-            String[] configs = new String[2];
+            String[] configs = new String[3];
             
             if(file != null){
                 try{
