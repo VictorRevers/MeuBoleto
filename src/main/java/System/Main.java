@@ -2,7 +2,8 @@
 package System;
 
 import com.sendmail.SendMail;
-import configsec.ConfigSec;
+import configsec.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.Timer;
@@ -13,13 +14,20 @@ public class Main {
     
     public static TimerTask task(){
         ConfigSec config = new ConfigSec();
+        ConfigBill configBill = new ConfigBill();
         Date date = new Date();
         int today = date.getDate();
+        int i = 0;
         
         TimerTask task = new TimerTask(){
             public void run(){              
                 String[] auth = config.readConfig();
                 SendMail sendMail = new SendMail();
+                ArrayList<String> bills = configBill.readConfig();
+                
+                for(String bill : bills){
+                    
+                }
         
                 if(auth[0] != null && auth[1] != null && auth[2] != null){
                     sendMail.setFrom(auth[0]);
@@ -28,7 +36,7 @@ public class Main {
             
                     sendMail.sendEmail();
                 }else{
-                    System.out.println("VOCÊ PRECISA CONFIGURAR AS INFORMAÇÕES DE ENVIO E AUTENTICAÇÃO!");
+                    System.out.println("VOCÊ PRECISA CONFIGURAR AS INFORMAÇÕES DE ENVIO E AUTENTICAÇÃO!");                  
                 }
                 System.exit(0);
             }
@@ -42,6 +50,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         Timer timer = new Timer();      
         ConfigSec config = new ConfigSec();
+        ConfigBill configBill = new ConfigBill();
         int option = 0;
         
         
@@ -69,15 +78,23 @@ public class Main {
                 config.setFrom(from);
                 config.setPass(pass);
                 config.setTo(to);
-                config.writeConfig();         
+                config.writeConfig();
+                
                 sc2.close();
                 
                 menu(task(), limitTime);
             break;
             case 2: 
                 Scanner sc3 = new Scanner(System.in);
-                System.out.println("INSIRA O BOLETO NO SEGUINTE FORMATO: NOME DO BOLETO, DIA VENCIMENTO Ex:(cartão, 10)");
+                System.out.println("NOME DO BOLETO: "); String bill = sc3.nextLine();
+                System.out.println("DIA DE VENCIMENTO: "); String day = sc3.next();
                 
+                configBill.setBill(bill);
+                configBill.setDay(Integer.parseInt(day));
+                configBill.writeConfig();
+                
+                sc3.close();
+                      
                 menu(task(), limitTime);
             break;
             default: 
