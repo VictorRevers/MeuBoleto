@@ -10,15 +10,14 @@ import java.util.TimerTask;
 
 
 public class Main {
-    public static void main(String args[]){
+    
+    public static TimerTask task(){
+        ConfigSec config = new ConfigSec();
         Date date = new Date();
         int today = date.getDate();
-        ConfigSec config = new ConfigSec();
-        int option = 0;
-        Timer timer = new Timer();
         
         TimerTask task = new TimerTask(){
-            public void run(){
+            public void run(){              
                 String[] auth = config.readConfig();
                 SendMail sendMail = new SendMail();
         
@@ -35,13 +34,23 @@ public class Main {
             }
         };
         
-        int limitTime = 5000;
+        return task;
+        
+    }
+    
+    public static void menu(TimerTask task, int limitTime){
+        Scanner sc = new Scanner(System.in);
+        Timer timer = new Timer();      
+        ConfigSec config = new ConfigSec();
+        int option = 0;
+        
+        
         timer.schedule(task, limitTime);
         
-        
-        Scanner sc = new Scanner(System.in);
+        System.out.println("***PARA PROSSEGUIR COM A EXECUÇÃO AGUARDE 5 SEGUNDOS!***");
         System.out.println("***INSIRA 1 PARA CONFIGURAR AS INFORMAÇÕES DE ENVIO E AUTENTICAÇÃO!***");
         System.out.println("***INSIRA 2 PARA CADASTRAR NOVO BOLETO!***");
+        
         
         System.out.println("->: ");  option = sc.nextInt();
         timer.cancel();
@@ -62,19 +71,29 @@ public class Main {
                 config.setTo(to);
                 config.writeConfig();         
                 sc2.close();
+                
+                menu(task(), limitTime);
             break;
             case 2: 
                 Scanner sc3 = new Scanner(System.in);
                 System.out.println("INSIRA O BOLETO NO SEGUINTE FORMATO: NOME DO BOLETO, DIA VENCIMENTO Ex:(cartão, 10)");
+                
+                menu(task(), limitTime);
             break;
             default: 
                 System.out.println("Opção inexistente!");
-        }
-        
-        
+                menu(task(), limitTime);
+        }       
         
         sc.close();
-                                      
+        
+    }
+    
+    public static void main(String args[]){       
+        int limitTime = 5000;
+        
+        menu(task(), limitTime);
+        
        System.exit(0);
     }
 }
