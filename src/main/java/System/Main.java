@@ -17,7 +17,7 @@ public class Main {
         ConfigBill configBill = new ConfigBill();
         Date date = new Date();
         int today = date.getDate();
-        int i = 0;
+        
         
         TimerTask task = new TimerTask(){
             public void run(){              
@@ -25,19 +25,30 @@ public class Main {
                 SendMail sendMail = new SendMail();
                 ArrayList<String> bills = configBill.readConfig();
                 
-                for(String bill : bills){
-                    
-                }
-        
                 if(auth[0] != null && auth[1] != null && auth[2] != null){
-                    sendMail.setFrom(auth[0]);
-                    sendMail.setPass(auth[1]);
-                    sendMail.setTo(auth[2]);
+                    if(bills.size()>0){
+                        for(int i = 0; i<bills.size(); i++){
+                        
+                            String bill = bills.get(i);
+                            
+                            String[] billDatas = bill.split(",",2);
+                            if(Integer.parseInt(billDatas[1]) == today){
+                                sendMail.setFrom(auth[0]);
+                                sendMail.setPass(auth[1]);
+                                sendMail.setTo(auth[2]);
             
-                    sendMail.sendEmail();
+                                sendMail.sendEmail(billDatas[0]);
+                            }else{
+                                System.out.println("NENHUM BOLETO POR HOJE!");
+                            }                           
+                        }
+                    }else{
+                        System.out.println("NENHUM BOLETO FOI CADASTRADO!");
+                    }
                 }else{
                     System.out.println("VOCÊ PRECISA CONFIGURAR AS INFORMAÇÕES DE ENVIO E AUTENTICAÇÃO!");                  
-                }
+                }                
+                        
                 System.exit(0);
             }
         };

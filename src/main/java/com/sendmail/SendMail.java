@@ -13,6 +13,8 @@ public class SendMail {
         private String to;
         private String from;
         private String pass;
+        
+        
         private static final String host = "smtp.office365.com";
         
         public void setFrom(String from){
@@ -27,7 +29,7 @@ public class SendMail {
             this.to = to;
         }
         
-        public void sendEmail(){
+        public void sendEmail(String bill){
             final Session session = Session.getInstance(this.mailProperties(), new javax.mail.Authenticator() {
                 protected PasswordAuthentication getPasswordAuthentication(){
                     PasswordAuthentication auth = new PasswordAuthentication(from, pass);
@@ -38,8 +40,8 @@ public class SendMail {
                 MimeMessage message = new MimeMessage(session);
                 message.setFrom(from);
                 message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-                message.setSubject("VENCIMENTO BOLETO X");
-                message.setText("SEU BOLETO X VENCE HOJE! LEMBRE-SE DE REALIZAR O PAGAMENTO! ;) ");
+                message.setSubject("VENCIMENTO BOLETO "+bill);
+                message.setText("SEU BOLETO "+bill+" VENCE HOJE! LEMBRE-SE DE REALIZAR O PAGAMENTO! ;) ");
                 System.out.println("enviando...");
                 Transport.send(message);
                 System.out.println("Mensagem enviada!");        
