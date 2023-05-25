@@ -26,6 +26,7 @@ public class Main {
                 ArrayList<String> bills = configBill.readConfig();
                 
                 if(auth[0] != null && auth[1] != null && auth[2] != null){
+                    int countToday = 0;
                     if(bills.size()>0){
                         for(int i = 0; i<bills.size(); i++){
                         
@@ -38,10 +39,13 @@ public class Main {
                                 sendMail.setTo(auth[2]);
             
                                 sendMail.sendEmail(billDatas[0]);
-                            }else{
-                                System.out.println("NENHUM BOLETO POR HOJE!");
-                            }                           
+                                countToday++;
+                            }
+                                                    
                         }
+                        if(countToday == 0){
+                                System.out.println("NENHUM BOLETO POR HOJE!");
+                        }   
                     }else{
                         System.out.println("NENHUM BOLETO FOI CADASTRADO!");
                     }
@@ -79,6 +83,7 @@ public class Main {
         switch(option){
             case 1:
                 Scanner sc2 = new Scanner(System.in);
+                //sc.close();
                 System.out.println("From: "); String from = sc2.nextLine();
             
                 System.out.println("Pass: "); String pass = sc2.nextLine();
@@ -91,29 +96,31 @@ public class Main {
                 config.setTo(to);
                 config.writeConfig();
                 
-                sc2.close();
+                //sc2.close();
                 
                 menu(task(), limitTime);
             break;
             case 2: 
                 Scanner sc3 = new Scanner(System.in);
+                
                 System.out.println("NOME DO BOLETO: "); String bill = sc3.nextLine();
                 System.out.println("DIA DE VENCIMENTO: "); String day = sc3.next();
                 
-                configBill.setBill(bill);
+                configBill.setBill(bill.toUpperCase());
                 configBill.setDay(Integer.parseInt(day));
                 configBill.writeConfig();
                 
-                sc3.close();
+                //sc3.close();
                       
                 menu(task(), limitTime);
             break;
             default: 
                 System.out.println("Opção inexistente!");
+                //sc.close();
                 menu(task(), limitTime);
         }       
         
-        sc.close();
+       
         
     }
     
